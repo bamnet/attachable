@@ -1,0 +1,41 @@
+Attachable
+==========
+
+A really simple file attachment plugin for Rails 3.  Designed to work with any generic files, i.e not specific to images.
+It will not do any magical processing for you, it just stores the data in the database.  Write your own magic.
+
+
+Usage
+=======
+
+Add the following fields to your table:
+
+add_column :medias, :file_name, :string
+add_column :medias, :file_type, :string
+add_column :medias, :file_size, :integer
+add_column :medias, :file_data, :binary, :limit => 2.megabytes
+
+In your model:
+class Media < ActiveRecord::Base  
+  attachable
+end
+
+In a controller that should be able to view the result:
+class MediasController < ApplicationController
+  def show
+    @media = Media(params[:id])
+    send_data @media.file_contents, :filename => @media.file_name, :type => @media.file_type, :disposition => 'inline'
+  end
+end
+
+To upload, just set the form field to :file AND remember the multipart => true bit like shown:
+<% form_for(@media, :html => { :multipart => true }) do |f| %>
+  <%= f.file_field :file %>
+  ....more stuff....
+
+
+In theory you can change the prefix from "file" to anything by setting the file_prefix option in the model, but I haven't tested it.
+
+If you can't tell, this plugin is very much an early alpha kinda thing, it works for what I need it to in Rails 3, and doesn't do anything fancy.  If you want fancy, look to paperclip or something like that.
+
+Copyright (c) 2010 Brian Michalski, released under the MIT license
