@@ -40,7 +40,7 @@ module Attachable
     def file=(tempfile)
       self["#{attachment_file_prefix}_data"]= tempfile.read
       self["#{attachment_file_prefix}_size"] = tempfile.size
-      self["#{attachment_file_prefix}_name"] = tempfile.original_path
+      self["#{attachment_file_prefix}_name"] = tempfile.original_filename
       self["#{attachment_file_prefix}_type"] = tempfile.content_type
     end
   end
