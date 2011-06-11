@@ -36,6 +36,4 @@ To upload, just set the form field to :file AND remember the multipart => true b
 
 In theory you can change the prefix from "file" to anything by setting the file_prefix option in the model, but I haven't tested it.
 
-If you can't tell, this plugin is very much an early alpha kinda thing, it works for what I need it to in Rails 3, and doesn't do anything fancy.  If you want fancy, look to paperclip or something like that.
-
 Copyright (c) 2010 Brian Michalski, released under the MIT license
