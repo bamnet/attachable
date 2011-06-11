@@ -46,7 +46,8 @@ module Attachable
     # content type).  We can't garuntee this file to be at the beginning,
     # so we always rewind it.
     def file=(tempfile)
-      self["#{attachment_file_prefix}_data"]= tempfile.read
+      tempfile.rewind #This may not be super efficient, but it's the necessary fix for Rails 3.1
+      self["#{attachment_file_prefix}_data"] = tempfile.read
       self["#{attachment_file_prefix}_size"] = tempfile.size
       self["#{attachment_file_prefix}_name"] = tempfile.original_filename
       self["#{attachment_file_prefix}_type"] = tempfile.content_type
