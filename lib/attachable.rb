@@ -1,4 +1,5 @@
 # Attachable
+require 'attachable/version'
 require 'active_record'
 require 'action_controller'
 
