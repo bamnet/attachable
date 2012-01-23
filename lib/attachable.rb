@@ -15,17 +15,13 @@ module Attachable
       cattr_accessor :attachment_file_prefix
       self.attachment_file_prefix = (options[:file_prefix] || :file).to_s
       
-      # Setup the default scope so the file data isn't included by default
-      send :default_scope, attachable_scope
+      # Setup the default scope so the file data isn't included by default.
+      # Generate the default scope, which includes every column except for the data column.
+      # We use this so queries, by default, don't include the file data which could be quite large.
+      default_scope { select(column_names.reject { |n| n == "#{attachment_file_prefix}_data" }.collect {|n| "#{table_name}.#{n}" }.join(',')) }
       
       # Include all the important stuff
-      send :include, InstanceMethods
-    end
-    
-    # Generate the default scope, which includes every column except for the data column.
-    # We use this so queries, by default, don't include the file data which could be quite large.
-    def attachable_scope
-      select(column_names.reject { |n| n == "#{attachment_file_prefix}_data" }.collect {|n| "#{table_name}.#{n}" }.join(','))
+      include InstanceMethods
     end
   end
   
