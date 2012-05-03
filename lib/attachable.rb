@@ -48,7 +48,6 @@ module Attachable
       self["#{attachment_file_prefix}_size"] = tempfile.size
 
       filename = nil
-      print "hi"
       if tempfile.respond_to?(:original_filename)
         filename = tempfile.original_filename        
       elsif tempfile.respond_to?(:path)
