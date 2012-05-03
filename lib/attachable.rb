@@ -46,8 +46,17 @@ module Attachable
       tempfile.rewind #This may not be super efficient, but it's the necessary fix for Rails 3.1
       self["#{attachment_file_prefix}_data"] = tempfile.read
       self["#{attachment_file_prefix}_size"] = tempfile.size
-      self["#{attachment_file_prefix}_name"] = tempfile.original_filename
-      self["#{attachment_file_prefix}_type"] = tempfile.content_type
+
+      filename = nil
+      print "hi"
+      if tempfile.respond_to?(:original_filename)
+        filename = tempfile.original_filename        
+      elsif tempfile.respond_to?(:path)
+        filename = File.basename(tempfile.path)
+      end
+      self["#{attachment_file_prefix}_name"] = filename unless filename.nil?
+
+      self["#{attachment_file_prefix}_type"] = tempfile.content_type if tempfile.respond_to?(:content_type)
     end
   end
   
